@@ -1,0 +1,50 @@
+# ── Python ──────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+*.manifest
+*.spec
+
+# ── Virtual environment ─────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── IDE & Editor ────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS files ────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ── YoloSide: large model files (downloaded by users) ──────────
+models/*.pt
+models/*.onnx
+models/*.engine
+
+# ── YoloSide: user config (contains personal paths / RTSP IPs) ─
+config/setting.json
+config/fold.json
+config/ip.json
+
+# ── YoloSide: ultralytics output ───────────────────────────────
+runs/
+results/
+
+# ── YoloSide: PyInstaller output ───────────────────────────────
+dist/
+build/
+
+# ── YoloSide: Claude Code Files ────────────────────────────────
+.claude/
+CLAUDE.md

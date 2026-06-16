@@ -10,13 +10,23 @@ class Camera:
         devices = []
         for device in range(0, self.cam_preset_num):
             stream = cv2.VideoCapture(device, cv2.CAP_DSHOW)
-            grabbed = stream.grab()
-            stream.release()
-            if not grabbed:
+            opened = stream.isOpened()
+            if not opened:
+                stream.release()
+                print(f"[capnums] device {device}: not opened", flush=True)
                 continue
-            else:
-                cnt = cnt + 1
-                devices.append(device)
+            # Use read() instead of grab() — more reliable:
+            # some virtual/fake devices pass grab() but fail to
+            # retrieve an actual frame.
+            grabbed, frame = stream.read()
+            stream.release()
+            if not grabbed or frame is None:
+                print(f"[capnums] device {device}: opened={opened} grabbed={grabbed} frame={'None' if frame is None else f'shape={frame.shape}'} → SKIP", flush=True)
+                continue
+            cnt = cnt + 1
+            devices.append(device)
+            print(f"[capnums] device {device}: opened={opened} frame_shape={frame.shape} → ACCEPT", flush=True)
+        print(f"[capnums] total: {cnt} camera(s): {devices}", flush=True)
         return cnt, devices
 
 

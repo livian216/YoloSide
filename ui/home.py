@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.Main_QF.setStyleSheet(u"QFrame#Main_QF{\n"
 "	background-color: qlineargradient(x0:0, y0:1, x1:1, y1:1,stop:0.4  rgb(107, 128, 210), stop:1 rgb(180, 140, 255));\n"
 "border:0px solid red;\n"
-"border-radius:30px\n"
+"border-radius:15px\n"
 "}")
         self.main_qframe = QHBoxLayout(self.Main_QF)
         self.main_qframe.setSpacing(0)
@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         self.LeftMenuBg.setStyleSheet(u"QFrame#LeftMenuBg{\n"
 "	background-color: rgba(255, 255, 255,0);\n"
 "border:0px solid red;\n"
-"border-radius:30px\n"
+"border-radius:15px\n"
 "}")
         self.LeftMenuBg.setFrameShape(QFrame.NoFrame)
         self.LeftMenuBg.setFrameShadow(QFrame.Raised)
@@ -78,7 +78,7 @@ class Ui_MainWindow(object):
         self.logo.setMaximumSize(QSize(50, 50))
         self.logo.setStyleSheet(u"image: url(:/all/img/logo.png);\n"
 "border:2px solid rgb(255, 255, 255);\n"
-"border-radius:10px")
+"border-radius:8px")
         self.Author = QLabel(self.TopLogoInfo)
         self.Author.setObjectName(u"Author")
         self.Author.setGeometry(QRect(90, 30, 60, 30))
@@ -279,7 +279,7 @@ class Ui_MainWindow(object):
         self.ContentBox.setStyleSheet(u"QFrame#ContentBox{\n"
 "	background-color: rgb(245, 249, 254);\n"
 "border:0px solid red;\n"
-"border-radius:30px\n"
+"border-radius:15px\n"
 "}")
         self.ContentBox.setFrameShape(QFrame.StyledPanel)
         self.ContentBox.setFrameShadow(QFrame.Raised)
@@ -906,10 +906,10 @@ class Ui_MainWindow(object):
         self.prm_page.setMaximumSize(QSize(0, 16777215))
         self.prm_page.setStyleSheet(u"QFrame#prm_page{\n"
 "background-color: qradialgradient(cx:0, cy:0, radius:1, fx:0.1, fy:0.1, stop:0 rgb(243, 175, 189),  stop:1 rgb(155, 118, 218));\n"
-"border-top-left-radius:30px;\n"
+"border-top-left-radius:15px;\n"
 "border-top-right-radius:0px;\n"
 "border-bottom-right-radius:0px;\n"
-"border-bottom-left-radius:30px;\n"
+"border-bottom-left-radius:15px;\n"
 "}")
         self.prm_page.setFrameShape(QFrame.StyledPanel)
         self.prm_page.setFrameShadow(QFrame.Raised)
@@ -1528,7 +1528,7 @@ class Ui_MainWindow(object):
         self.frame_size_grip = QFrame(self.below)
         self.frame_size_grip.setObjectName(u"frame_size_grip")
         self.frame_size_grip.setMaximumSize(QSize(20, 16777215))
-        self.frame_size_grip.setStyleSheet(u"border-radius:30px;")
+        self.frame_size_grip.setStyleSheet(u"border-radius:15px;")
         self.frame_size_grip.setFrameShape(QFrame.StyledPanel)
         self.frame_size_grip.setFrameShadow(QFrame.Raised)
 
