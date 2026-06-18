@@ -1,28 +1,28 @@
-# YoloSide v2.0 — Ultralytics Desktop GUI
+# YoloSide v2.0 — Ultralytics 桌面 GUI
 
-A PySide6 desktop application providing a modern GUI for the [ultralytics](https://github.com/ultralytics/ultralytics) YOLO framework. Supports all task types: **Detection, Segmentation, Pose Estimation, Classification, Oriented Bounding Boxes (OBB), and Tracking**.
+基于 PySide6 的现代化桌面应用，为 [ultralytics](https://github.com/ultralytics/ultralytics) YOLO 框架提供图形化操作界面。支持全部任务类型：**检测、分割、姿态估计、分类、旋转目标检测（OBB）以及目标跟踪**。
 
 ![](img/home.png)
 
-## Features
+## 功能特性
 
-- 🎯 **All ultralytics task types** — Detect, Segment, Pose, Classify, OBB, Track
-- 📷 **Multiple input sources** — USB camera, local video/image files, RTSP streams
-- 📁 **Batch processing** — process entire folders of images at once
-- ⬇️ **Auto-download models** — select any model from the registry, ultralytics downloads it automatically
-- 🎨 **Purple gradient theme** — frameless modern window with rounded corners and shadows
-- 💾 **Save results** — annotated images and YOLO-format txt labels
-- ⚙️ **Adjustable parameters** — IOU, Confidence, inference speed, image size
-- 📊 **Real-time stats** — FPS counter, class counts, target counts, progress bar
-- 🔄 **Multi-cycle stable** — camera properly releases between runs (COM thread-safety fix)
+- 🎯 **全任务类型支持** — 检测 / 分割 / 姿态 / 分类 / OBB / 跟踪
+- 📷 **多输入源** — USB 摄像头、本地视频/图片文件、RTSP 流
+- 📁 **批量处理** — 一键处理整个文件夹的图片
+- ⬇️ **自动下载模型** — 从下拉列表中选择任意模型，ultralytics 自动下载
+- 🎨 **紫色渐变主题** — 无边框现代窗口，圆角阴影
+- 💾 **结果保存** — 支持保存标注图片和 YOLO 格式 txt 标签
+- ⚙️ **可调参数** — IOU、置信度、推理速度、图像尺寸
+- 📊 **实时统计** — FPS 帧率、类别计数、目标计数、进度条
+- 🔄 **多轮运行稳定** — 摄像头在多次运行间正确释放（COM 线程安全修复）
 
-## Quick Start
+## 快速开始
 
-### Requirements
+### 环境要求
 - **Python** ≥ 3.10
-- **OS**: Windows 10/11 (primary), Linux/macOS (untested but likely work)
+- **操作系统**：Windows 10/11（主要支持），Linux/macOS（未测试但理论上可用）
 
-### Install
+### 安装
 ```bash
 git clone https://github.com/Jai-wei/YoloSide.git
 cd YoloSide
@@ -33,68 +33,68 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### Run
+### 运行
 ```bash
 python main.py
 ```
 
-On first run, select a model from the dropdown — ultralytics will automatically download it to the `models/` folder. Then choose an input source (Camera / Local File / RTSP) and click **▶ Start**.
+首次运行时，从下拉框中选择一个模型 — ultralytics 会自动将其下载到 `models/` 文件夹中。然后选择输入源（摄像头 / 本地文件 / RTSP），点击 **▶ Start** 即可开始推理。
 
-## Project Structure
+## 项目结构
 
 ```
 YoloSide/
-├── main.py                    # Entry point
-├── app/mainwindow.py          # MainWindow — UI orchestration
-├── engine/                    # Inference engine
-│   ├── inference.py           #   YoloEngine(QObject) — COM-safe worker
-│   ├── task_config.py         #   Task types + 83-model registry
-│   └── batch_processor.py     #   Batch processing logic
-├── config/settings.py         # Typed config (AppSettings dataclass)
-├── widgets/                   # UI widgets
-│   ├── UIFunctions.py         #   Window controls, shadows, animations
-│   └── custom_grips.py        #   Resize grips
-├── ui/                        # Qt Designer output
-│   ├── home.py                #   Main window layout
-│   ├── resources_rc.py        #   Compiled resources
-│   └── CustomMessageBox.py    #   Styled message dialog
-├── utils/                     # Utilities
-│   ├── capnums.py             #   Camera enumeration (DSHOW)
-│   ├── rtsp_win.py            #   RTSP input window
-│   └── rtsp_dialog.py         #   RTSP dialog UI
-├── models/.gitkeep            # Downloaded .pt files (gitignored)
-├── img/                       # Icons and images
-└── hooks/                     # PyInstaller packaging hooks
+├── main.py                    # 入口文件
+├── app/mainwindow.py          # MainWindow — UI 调度核心
+├── engine/                    # 推理引擎
+│   ├── inference.py           #   YoloEngine(QObject) — COM 安全的推理工作线程
+│   ├── task_config.py         #   任务类型 + 83 个模型注册表
+│   └── batch_processor.py     #   批量处理逻辑
+├── config/settings.py         # 类型化配置（AppSettings 数据类）
+├── widgets/                   # UI 控件
+│   ├── UIFunctions.py         #   窗口控制、阴影、动画
+│   └── custom_grips.py        #   窗口拖拽调整大小
+├── ui/                        # Qt Designer 生成的 UI 文件
+│   ├── home.py                #   主窗口布局
+│   ├── resources_rc.py        #   编译后的资源文件
+│   └── CustomMessageBox.py    #   自定义消息对话框
+├── utils/                     # 工具模块
+│   ├── capnums.py             #   摄像头枚举（DSHOW）
+│   ├── rtsp_win.py            #   RTSP 输入窗口
+│   └── rtsp_dialog.py         #   RTSP 对话框 UI
+├── models/.gitkeep            # 模型下载目录（.pt 文件被 gitignore）
+├── img/                       # 图标和图片资源
+└── hooks/                     # PyInstaller 打包钩子
 ```
 
-## Architecture
+## 架构设计
 
-- **Engine**: `YoloEngine(QObject)` runs in a `QThread`, communicates via Qt Signal/Slot
-- **Thread safety**: `cv2.VideoCapture` release happens in the worker thread (same thread as COM `CoInitialize`) — prevents Windows MSMF driver leaks
-- **Generator pattern**: `YOLO().predict(source, stream=True)` for frame-by-frame inference
-- **Visualization**: `result.plot()` — ultralytics built-in, covers all task types
+- **引擎**：`YoloEngine(QObject)` 运行在独立的 `QThread` 中，通过 Qt Signal/Slot 机制与 UI 通信
+- **线程安全**：`cv2.VideoCapture` 的释放在工作线程中完成（与 COM `CoInitialize` 同一线程），避免 Windows MSMF 驱动资源泄漏
+- **生成器模式**：`YOLO().predict(source, stream=True)` 实现逐帧推理
+- **可视化**：使用 ultralytics 内置的 `result.plot()` 方法，覆盖所有任务类型
 
-## Model Support
+## 模型支持
 
-83 models across the ultralytics ecosystem: YOLOv5, YOLOv8, YOLOv9, YOLOv10, YOLOv11, YOLOv12, RT-DETR, FastSAM, SAM 2.1, and more. Select any model from the dropdown — if not present locally, ultralytics downloads it automatically.
+覆盖 ultralytics 生态中 83 个模型：YOLOv5、YOLOv8、YOLOv9、YOLOv10、YOLOv11、YOLOv12、RT-DETR、FastSAM、SAM 2.1 等。从下拉框中选择任意模型 — 如果本地不存在，ultralytics 会自动下载。
 
-## To Do
+## 待办事项
 
-- [ ] PyInstaller `.exe` packaging
-- [ ] Model download progress indicator
-- [ ] GPU/CUDA device selection UI
-- [ ] Image size (imgsz) control in settings
-- [ ] Custom tracking trail visualization
+- [ ] PyInstaller `.exe` 打包（已有初步构建，见下方说明）
+- [ ] 模型下载进度指示
+- [ ] GPU/CUDA 设备选择界面
+- [ ] 设置中的图像尺寸（imgsz）控制
+- [ ] 自定义跟踪轨迹可视化
 
-## Notice
+## 注意事项
 
-- `ultralytics` is licensed under **AGPL-3.0** — commercial use requires a separate license
-- Trained `.pt` files go in the `models/` folder
-- Saved results go to `./runs/` by default
-- To modify the UI, edit `home.ui` in Qt Designer, then run `pyside6-uic home.ui > ui/home.py`
+- `ultralytics` 使用 **AGPL-3.0** 许可证 — 商业使用需另行获取授权
+- 训练好的 `.pt` 文件放在 `models/` 文件夹下
+- 推理结果默认保存到 `./runs/` 目录
+- 如需修改界面，在 Qt Designer 中编辑 `home.ui`，然后运行 `pyside6-uic home.ui > ui/home.py`
 
-## References
+## 参考资料
 
 - [ultralytics](https://github.com/ultralytics/ultralytics)
-- [YOLOv8-PySide6-GUI](https://github.com/Jai-wei/YOLOv8-PySide6-GUI) (original v1.0 base)
+- [YOLOv8-PySide6-GUI](https://github.com/Jai-wei/YOLOv8-PySide6-GUI)（原始 v1.0 基础版本）
 - [PyQt5-YOLOv5](https://github.com/Javacr/PyQt5-YOLOv5)
