@@ -286,18 +286,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         task_config = TASK_REGISTRY[task_type]
         registry_models = set(task_config.available_models)
 
-        # Get locally downloaded models that match this task
+        # Get locally downloaded models that match this task.
+        # Use _writable_path so models survive app restarts
+        # (in bundled mode, _MEIPASS is a temp dir that gets wiped).
+        models_dir = _writable_path('models')
         local_models = []
-        if os.path.isdir(_resource_path('models')):
-            for f in os.listdir(_resource_path('models')):
+        if os.path.isdir(models_dir):
+            for f in os.listdir(models_dir):
                 if f.endswith('.pt'):
                     local_models.append(f)
 
         # Show: local models that are in the registry for this task
         # + any local models not in registry (custom models)
         local_registry = [m for m in local_models if m in registry_models]
-        local_registry.sort(key=lambda x: os.path.getsize(os.path.join(_resource_path('models'), x))
-                           if os.path.exists(os.path.join(_resource_path('models'), x)) else 0)
+        local_registry.sort(key=lambda x: os.path.getsize(os.path.join(models_dir, x))
+                           if os.path.exists(os.path.join(models_dir, x)) else 0)
 
         # Add marker for downloadable models
         available = list(local_registry)
@@ -511,7 +514,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Create batch processor
         model_name = self.model_box.currentText().replace("🌐 ", "")
-        model_path = f"{_resource_path('models')}/{model_name}" if "/" not in model_name else model_name
+        model_path = f"{_writable_path('models')}/{model_name}" if "/" not in model_name else model_name
 
         self._batch_processor = BatchProcessor()
         self._batch_processor.set_task(self._current_task_type)
@@ -892,7 +895,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 task_type = self._current_task_type
             # Strip 🌐 prefix for downloadable models
             clean_name = name.replace("🌐 ", "")
-            model_path = f"{_resource_path('models')}/{clean_name}" if "/" not in clean_name else clean_name
+            # Use writable path so ultralytics can persist downloaded models
+            model_path = f"{_writable_path('models')}/{clean_name}" if "/" not in clean_name else clean_name
             self.yolo_engine.set_model(model_path)
             self.Model_name.setText(clean_name)
             self.show_status(f'Model: {clean_name}')
@@ -908,7 +912,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Don't refresh while the user is browsing the dropdown
         if self.model_box.view().isVisible():
             return
-        models_dir = _resource_path('models')
+        models_dir = _writable_path('models')
         if not os.path.isdir(models_dir):
             return
         current_all = sorted(

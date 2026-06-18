@@ -78,13 +78,60 @@ YoloSide/
 
 覆盖 ultralytics 生态中 83 个模型：YOLOv5、YOLOv8、YOLOv9、YOLOv10、YOLOv11、YOLOv12、RT-DETR、FastSAM、SAM 2.1 等。从下拉框中选择任意模型 — 如果本地不存在，ultralytics 会自动下载。
 
+## 版本发布
+
+用户无需安装 Python 环境即可使用。每次 Release 提供单个安装包：
+
+**`YoloSide_Setup_v2.0.exe`**（~500 MB）— 双击运行，中文向导引导安装，自动创建桌面快捷方式、开始菜单入口和卸载程序。默认安装到 `%LOCALAPPDATA%\Programs\YoloSide`，无需管理员权限。
+
+> 💡 首次运行时会自动下载所选模型到安装目录下的 `models/` 文件夹（需联网）。
+
 ## 待办事项
 
-- [ ] PyInstaller `.exe` 打包（已有初步构建，见下方说明）
-- [ ] 模型下载进度指示
-- [ ] GPU/CUDA 设备选择界面
-- [ ] 设置中的图像尺寸（imgsz）控制
-- [ ] 自定义跟踪轨迹可视化
+- [x] ~~PyInstaller `.exe` 打包 + Inno Setup 安装器~~ （v2.0 已完成，一键 `build.bat` 构建）
+- [ ] 模型下载进度指示（目前下载期间界面无反馈）
+- [ ] GPU/CUDA 设备选择界面（当前自动使用可用的 CUDA 设备）
+- [ ] 设置面板中的图像尺寸（imgsz）手动控制
+- [ ] 目标跟踪自定义轨迹可视化（当前使用 ultralytics 内置 `plot()`）
+- [ ] 清理 `engine/inference.py` 中的 debug `print()` 语句
+- [ ] 已知小问题：跨线程 generator.close() 警告（无害）、摄像头枚举重复设备号（DSHOW 多 pin）
+
+## 打包为 EXE
+
+项目配置了 PyInstaller (`--onedir` 模式) + Inno Setup 一键构建流水线。运行 `build.bat` 即可同时产出安装器和便携版。
+
+### 一键构建
+```batch
+build.bat
+```
+脚本自动完成：清理旧构建 → PyInstaller 打包（3-8 分钟） → Inno Setup 打包 → 验证产物。
+
+### 产物
+| 产物 | 路径 | 说明 |
+|------|------|------|
+| 安装器（推荐分发） | `dist\YoloSide_Setup_v2.0.exe` | 单个 exe，约 500MB，用户双击安装 |
+| 便携版目录 | `dist\YoloSide\` | 整个文件夹 zip 后即可分发 |
+
+> ⚠️ 便携版的 `YoloSide.exe` **不能单独运行** — 它依赖同目录下的 `_internal/` 文件夹（内含 Python 运行时和全部依赖库）。分发便携版时必须打包整个 `YoloSide/` 文件夹。
+
+### 用户安装体验
+1. 双击 `YoloSide_Setup_v2.0.exe` → 中文安装向导
+2. 选择安装路径（默认 `%LOCALAPPDATA%\Programs\YoloSide`，**无需管理员权限**）
+3. 自动完成：文件解压、桌面快捷方式、开始菜单入口、卸载程序注册
+4. 勾选"立即运行"即可启动
+
+### 构建依赖
+- **PyInstaller**：`pip install pyinstaller`（已包含在 `requirements.txt` 中）
+- **Inno Setup 6**：[下载地址](https://jrsoftware.org/isinfo.php)（仅构建者需要）
+- Python 虚拟环境需已安装全部运行时依赖
+
+### 技术说明
+- `YoloSide.spec` — PyInstaller 打包配置，排除未使用的 Qt 模块以减小体积
+- `installer.iss` — Inno Setup 中文安装向导脚本，含完整中文 `[CustomMessages]`
+- `hooks/hook-ultralytics.py` — 确保 ultralytics 的 YAML 配置等数据文件被打包
+- `.pt` 模型文件**不会**被打包（体积过大），用户首次使用时自动下载到安装目录 `models/`
+- 当前打包 CPU 版 PyTorch；如需 GPU 版，替换虚拟环境中的 torch 包后重新构建
+- PyInstaller 使用 `--onedir` 模式（非 `--onefile`），因为 torch + ultralytics 的 C 扩展与单文件模式不兼容
 
 ## 注意事项
 
